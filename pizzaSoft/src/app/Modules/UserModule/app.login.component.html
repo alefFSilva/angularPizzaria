@@ -1,12 +1,23 @@
 <div class="container center_div">
-            <form>
+            <form #f = "ngForm"
+                (ngSubmit) = "onSubmit(f)">
+
                 <div class="form-group">
                     <label for="loginEmail"> Email</label>
-                    <input id="loginEmail" type="text" class="form-control" />
+                    <input id="loginEmail" 
+                            type="text" 
+                            class="form-control" 
+                            name="email"
+                            ngModel/>
                 </div>
                 <div class="form-group">
-                    <label for="loginSenha">Senha</label>
-                    <input id="loginSenha" type="password" class="form-control" />
+                    <label for="loginPassword">Senha</label>
+                    <input 
+                            id="loginPassword" 
+                            type="password" 
+                            class="form-control" 
+                            name="password"
+                            ngModel/>
                 </div>
                 <button type="submit" class="btn btn-default"> Acessar</button>
             </form>
