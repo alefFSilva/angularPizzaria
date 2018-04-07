@@ -1,14 +1,19 @@
-<div class="container center_div">
-            <form #f = "ngForm"
-                (ngSubmit) = "onSubmit(f)">
-
+<a class="btn btn-danger" onclick="toastr.error('Hi! I am error message.');">Error message</a>
+<div class="loginForm">
+    <h2>Acesso ao Sistema</h2>
+            <form [formGroup]="loginForm" (ngSubmit) = "onSubmit(loginForm.value)">
                 <div class="form-group">
                     <label for="loginEmail"> Email</label>
                     <input id="loginEmail" 
-                            type="text" 
+                            type="email" 
                             class="form-control" 
-                            name="email"
-                            ngModel/>
+                            [class.errorField]="!emailControl.valid && emailControl.touched"
+                            formControlName = "emailControl" />
+
+                            <span *ngIf="emailControl.touched && emailControl.hasError('invalidEmail')"
+                                    class="errorMessage"> 
+                                    E-mail Inválido
+                            </span>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Senha</label>
@@ -16,9 +21,12 @@
                             id="loginPassword" 
                             type="password" 
                             class="form-control" 
-                            name="password"
-                            ngModel/>
+                            [class.errorField]="!passwordControl.valid && passwordControl.touched"
+                            formControlName = "passwordControl"/>
                 </div>
-                <button type="submit" class="btn btn-default"> Acessar</button>
+                <div *ngIf="!emailControl.hasError('invalidEmail') && passwordControl.valid">
+                    <button type="submit" class="btn btn-default"> Acessar</button>
+                </div>
+
             </form>
 </div>

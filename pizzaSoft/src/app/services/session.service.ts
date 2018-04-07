@@ -11,7 +11,7 @@ export class SessionService {
 
     login(email: string, password: string): boolean {
         var result = false;
-        if (email == 'alefs93' && password == '123') {
+        if (email == 'alefs93@gmail.com' && password == '123') {
             result = true;
             this._currentUser.Email = email;
             this.saveCurrentUser(this._currentUser);

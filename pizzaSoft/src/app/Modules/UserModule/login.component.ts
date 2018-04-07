@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { Router } from "@angular/router";
 import { RedirectService } from "../../services/redirect.service";
 import { SessionService } from "../../services/session.service";
@@ -12,16 +12,35 @@ import { RoutesPaths } from "../../Constants/routesPaths";
     styleUrls: ['app.login.css']
 })
 export class LoginComponent implements OnInit {
+
+    loginForm: FormGroup;
+    emailControl: AbstractControl;
+    passwordControl: AbstractControl; 
+
     private _email: string;
     private _password: string;
     private _isLogged: boolean;
+    private _loginError: boolean;
 
     private _sessionService: SessionService;
     private _redirectService: RedirectService;
 
-    constructor(sessionService: SessionService, redirectService: RedirectService) {
+    constructor(sessionService: SessionService, 
+                redirectService: RedirectService,
+                formBuilder: FormBuilder) {
+                    this.loginForm = formBuilder.group({
+                        'emailControl': ['', Validators.compose([
+                            Validators.required, this.emailValidator
+                        ])],
+                        'passwordControl': ['', Validators.required]
+                    });
+
         this._sessionService = sessionService;
         this._redirectService = redirectService;
+
+        this.emailControl = this.loginForm.controls['emailControl'];
+        this.passwordControl = this.loginForm.controls['passwordControl'];
+
     }
 
     ngOnInit() {
@@ -30,15 +49,32 @@ export class LoginComponent implements OnInit {
         }
     }
 
-    onSubmit(formResult: FormGroup): void {
-        this._email = formResult.controls['email'].value;
-        this._password = formResult.controls['password'].value;
+    onSubmit(formResult: any): void {
+        var email  = formResult.emailControl;
+        var password = formResult.passwordControl;
 
-        this._isLogged = this._sessionService.login(this._email, this._password);
+        this._isLogged = this._sessionService.login(email, password);
+        if(!this._isLogged){
+            this._loginError = true;
+        }
 
         if (this._isLogged) {
             this._redirectService.redirectToPath(RoutesPaths.HOME_PATH);
-            this._isLogged = true;
+            this.showAccessDeniedError();
         }
+    }
+
+    private emailValidator(emailControl: FormControl): {[s: string] : boolean} {
+        if(!emailControl.value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+            return {invalidEmail: true};
+        }
+    }
+
+    private showAccessDeniedError (){
+        this._loginError = true;
+    }
+
+    private hideAccessDeniedError (){
+        this._loginError = false;
     }
 }

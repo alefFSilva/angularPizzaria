@@ -1,6 +1,31 @@
-
-
-.center_div{
+.loginForm{
     margin: 0 auto;
-    width:80% /* value of your choice which suits your alignment */
+    margin-top: 10%;
+    width:50%;
+    padding: 5%;
+    border: 2px solid #78A1BB;
+    border-radius: 10%;
+}
+
+.loginForm h2 {
+    text-align: center;
+}
+
+.errorField {
+    border: 1px solid red;
+}
+
+.errorMessage{
+    color: red;
+    font: bold;
+}
+
+.accessDeniedMessage{
+    width: 30%;
+    left:60%;
+    top: 50px;
+
+    font-size: 120%;
+    text-align: center;
+    
 }
