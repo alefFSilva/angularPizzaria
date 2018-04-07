@@ -20,6 +20,7 @@ import { RedirectService } from './services/redirect.service';
     HomeModule,
     RouterModule.forRoot(routes)
   ],
+  exports: [],
   providers: [ RedirectService],
   bootstrap: [AppComponent]
 })

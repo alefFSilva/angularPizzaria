@@ -1,10 +1,10 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from "@angular/forms";
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { FormGroup, AbstractControl, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router } from "@angular/router";
 import { RedirectService } from "../../services/redirect.service";
 import { SessionService } from "../../services/session.service";
 import { RoutesPaths } from "../../Constants/routesPaths";
-
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
     selector: 'app-login-component',
@@ -12,35 +12,30 @@ import { RoutesPaths } from "../../Constants/routesPaths";
     styleUrls: ['app.login.css']
 })
 export class LoginComponent implements OnInit {
-
     loginForm: FormGroup;
     emailControl: AbstractControl;
     passwordControl: AbstractControl; 
 
-    private _email: string;
-    private _password: string;
     private _isLogged: boolean;
     private _loginError: boolean;
 
     private _sessionService: SessionService;
     private _redirectService: RedirectService;
+    private _toastManager: ToastsManager;
 
-    constructor(sessionService: SessionService, 
-                redirectService: RedirectService,
-                formBuilder: FormBuilder) {
-                    this.loginForm = formBuilder.group({
-                        'emailControl': ['', Validators.compose([
-                            Validators.required, this.emailValidator
-                        ])],
-                        'passwordControl': ['', Validators.required]
-                    });
+    constructor(sessionService: SessionService, redirectService: RedirectService,
+        toastManager: ToastsManager, formBuilder: FormBuilder,
+        viewContainerRef: ViewContainerRef) {
 
         this._sessionService = sessionService;
         this._redirectService = redirectService;
+        this._toastManager = toastManager;
 
+        this.loginForm = this.buildForm(formBuilder);
         this.emailControl = this.loginForm.controls['emailControl'];
         this.passwordControl = this.loginForm.controls['passwordControl'];
 
+        this._toastManager.setRootViewContainerRef(viewContainerRef);
     }
 
     ngOnInit() {
@@ -50,31 +45,36 @@ export class LoginComponent implements OnInit {
     }
 
     onSubmit(formResult: any): void {
-        var email  = formResult.emailControl;
-        var password = formResult.passwordControl;
+        const email  = formResult.emailControl;
+        const password = formResult.passwordControl;
 
         this._isLogged = this._sessionService.login(email, password);
-        if(!this._isLogged){
+        if (!this._isLogged) {
             this._loginError = true;
+            this.showAccessDeniedError();
         }
 
         if (this._isLogged) {
             this._redirectService.redirectToPath(RoutesPaths.HOME_PATH);
-            this.showAccessDeniedError();
         }
     }
 
-    private emailValidator(emailControl: FormControl): {[s: string] : boolean} {
-        if(!emailControl.value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+    private emailValidator(emailControl: FormControl): {[s: string]: boolean} {
+        if (!emailControl.value.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
             return {invalidEmail: true};
         }
     }
 
     private showAccessDeniedError (){
-        this._loginError = true;
+        this._toastManager.error("Verifique seu E-mail e Senha.", "Dados Inválidos");
     }
 
-    private hideAccessDeniedError (){
-        this._loginError = false;
-    }
+    private buildForm(formBuilder: FormBuilder): FormGroup{
+        return formBuilder.group({
+            'emailControl': ['', Validators.compose([
+                Validators.required, this.emailValidator
+            ])],
+            'passwordControl': ['', Validators.required]
+    })}
 }
+    
