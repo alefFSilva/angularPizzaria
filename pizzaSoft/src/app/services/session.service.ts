@@ -34,5 +34,4 @@ export class SessionService {
     getCurrentUser():User{
         return this._currentUser;
     }
-
 }
