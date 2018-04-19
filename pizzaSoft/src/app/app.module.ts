@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'ng2-toastr';
 import { SessionService } from './services/session.service';
+import {HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SessionService } from './services/session.service';
     ReactiveFormsModule,
     BrowserAnimationsModule,
     ToastModule.forRoot(),
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    HttpClientModule
   ],
   exports: [],
   providers: [ RedirectService, SessionService],

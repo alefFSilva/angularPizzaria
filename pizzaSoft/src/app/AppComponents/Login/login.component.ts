@@ -5,6 +5,7 @@ import { RedirectService } from "../../services/redirect.service";
 import { SessionService } from "../../services/session.service";
 import { RoutesPaths } from "../../Constants/routesPaths";
 import { ToastsManager } from 'ng2-toastr';
+import { DefaultResponse } from '../../Constants/Response/DefaultResponse';
 
 @Component({
     selector: 'app-login-component',
@@ -14,7 +15,8 @@ import { ToastsManager } from 'ng2-toastr';
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     emailControl: AbstractControl;
-    passwordControl: AbstractControl; 
+    passwordControl: AbstractControl;
+    _response : DefaultResponse; 
 
     private _isLogged: boolean;
     private _loginError: boolean;
@@ -48,15 +50,18 @@ export class LoginComponent implements OnInit {
         const email  = formResult.emailControl;
         const password = formResult.passwordControl;
 
-        this._isLogged = this._sessionService.login(email, password);
-        if (!this._isLogged) {
-            this._loginError = true;
-            this.showAccessDeniedError();
-        }
+        this._sessionService.login(email, password)
+            .subscribe((result: DefaultResponse) => {
+                this._response = result;
 
-        if (this._isLogged) {
-            this._redirectService.redirectToPath(RoutesPaths.HOME_PATH);
-        }
+                if (this._response.success) {
+                    this._redirectService.redirectToPath(RoutesPaths.HOME_PATH);
+                } else {
+                    this._loginError = true;
+                    this.showAccessDeniedError();
+                }
+
+            });
     }
 
     private emailValidator(emailControl: FormControl): {[s: string]: boolean} {
