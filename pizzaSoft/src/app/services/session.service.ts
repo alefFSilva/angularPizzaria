@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { User } from "../Models/user"
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { DefaultResponse } from "../Constants/Response/DefaultResponse";
+import { DefaultResponse } from "../Common/Response/DefaultResponse";
 import 'rxjs/add/operator/map';
 import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class SessionService {
-    _currentUser: User
+    _currentUser: User;
     _httpClient: HttpClient;
     _authServiceURL = "http://192.168.0.105/Auth/DoLogin";
     _response = new DefaultResponse();
@@ -18,10 +18,9 @@ export class SessionService {
      }
 
     login(email: string, password: string): Observable<DefaultResponse> {
+        let authHeader = this.getAuthHeader(email, password);
 
-        let header = new HttpHeaders({ 'Authorization': 'Basic ' + btoa(email + ':' + password) });
-
-        return this._httpClient.get(this._authServiceURL, { headers: header})
+        return this._httpClient.get(this._authServiceURL, { headers: authHeader })
             .map((response: DefaultResponse) => {
                 this._response.success = response.success;
                 this._currentUser.Email = email;
@@ -44,5 +43,9 @@ export class SessionService {
 
     getCurrentUser():User{
         return this._currentUser;
+    }
+
+    private getAuthHeader(email :string, password:string):HttpHeaders {
+        return new HttpHeaders({ 'Authorization': 'Basic ' + btoa(email + ':' + password) });
     }
 }

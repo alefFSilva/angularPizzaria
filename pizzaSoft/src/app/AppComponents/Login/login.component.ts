@@ -5,7 +5,7 @@ import { RedirectService } from "../../services/redirect.service";
 import { SessionService } from "../../services/session.service";
 import { RoutesPaths } from "../../Constants/routesPaths";
 import { ToastsManager } from 'ng2-toastr';
-import { DefaultResponse } from '../../Constants/Response/DefaultResponse';
+import { DefaultResponse } from '../../Common/Response/DefaultResponse';
 
 @Component({
     selector: 'app-login-component',
