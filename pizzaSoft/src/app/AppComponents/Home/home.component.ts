@@ -5,16 +5,16 @@ import { RedirectService } from "../../services/redirect.service";
 import { RoutesPaths } from "../../Constants/routesPaths";
 
 @Component({
-    selector: "app.home.component",
-    templateUrl: "app.home.component.html",
-    styleUrls: ["app.home.css"]
+    selector: "home.component",
+    templateUrl: "home.component.html",
+    styleUrls: ["home.component.css"]
 })
 export class HomeComponent implements OnInit{
     private _userEmail: string;
     private _sessionService: SessionService;
     private _redirectService: RedirectService;
 
-    constructor(sessionService:SessionService, 
+    constructor(sessionService:SessionService,
         redirectService: RedirectService){
 
         this._userEmail = localStorage.getItem('userName');

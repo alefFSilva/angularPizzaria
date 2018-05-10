@@ -8,15 +8,15 @@ import { ToastsManager } from 'ng2-toastr';
 import { DefaultResponse } from '../../Common/Response/DefaultResponse';
 
 @Component({
-    selector: 'app-login-component',
-    templateUrl: 'app.login.component.html',
-    styleUrls: ['app.login.css']
+    selector: 'login-component',
+    templateUrl: 'login.component.html',
+    styleUrls: ['login.component.css']
 })
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     emailControl: AbstractControl;
     passwordControl: AbstractControl;
-    _response : DefaultResponse; 
+    _response : DefaultResponse;
 
     private _isLogged: boolean;
     private _loginError: boolean;
@@ -82,4 +82,3 @@ export class LoginComponent implements OnInit {
             'passwordControl': ['', Validators.required]
     })}
 }
-    

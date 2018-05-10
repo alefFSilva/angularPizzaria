@@ -9,7 +9,7 @@ import { Observable } from "rxjs/Observable";
 export class SessionService {
     _currentUser: User;
     _httpClient: HttpClient;
-    _authServiceURL = "http://192.168.0.105/Auth/DoLogin";
+    _authServiceURL = "http://localhost:45/Auth/DoLogin";
     _response = new DefaultResponse();
 
     constructor(httpClient: HttpClient) {
