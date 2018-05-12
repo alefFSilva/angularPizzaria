@@ -12,8 +12,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastModule } from 'ng2-toastr';
 import { SessionService } from './services/session.service';
 import {HttpClientModule } from '@angular/common/http';
-import { ContentComponent } from './AppComponents/Content/content.component';
 import { MenuComponent } from './AppComponents/Menu/menu.component';
+import { DashBoardComponent } from './AppComponents/DashBoard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,7 @@ import { MenuComponent } from './AppComponents/Menu/menu.component';
     LoginComponent,
     HomeComponent,
     MenuComponent,
-    ContentComponent
+    DashBoardComponent
   ],
   imports: [
     BrowserModule,
