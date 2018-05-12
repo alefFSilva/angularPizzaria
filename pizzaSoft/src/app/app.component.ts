@@ -10,23 +10,19 @@ import { RoutesPaths } from './Constants/routesPaths';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  private _router: Router;
-  private _isLogged: boolean;
-  private _redirectService: RedirectService;
+  private router: Router;
+  private isLogged: boolean;
+  private redirectService: RedirectService;
 
-  constructor(router: Router,
-              sessionService: SessionService,
-              redirectService: RedirectService) {
-    this._router = router;
-    this._isLogged = sessionService.getCurrentUser() != null;
-    this._redirectService = redirectService;
+  constructor(_router: Router, _sessionService: SessionService, _redirectService: RedirectService) {
+    this.router = _router;
+    this.isLogged = _sessionService.isLogged;
+    this.redirectService = _redirectService;
   }
 
   ngOnInit() {
-    if (!this._isLogged) {
-      this._redirectService.redirectToPath(RoutesPaths.LOGIN_PATH);
-    } else {
-      this._redirectService.redirectToPath(RoutesPaths.HOME_PATH);
+    if (!this.isLogged) {
+      this.redirectService.redirectToPath(RoutesPaths.LOGIN_PATH);
     }
   }
 }

@@ -12,4 +12,8 @@ export class RedirectService {
     redirectToPath(path: string):void{
         this._router.navigate([path]);
     }
+
+    retirectToLogin(): void {
+        // this._router.navigate(['/dashBoard', {outlets: {'bio': [id]}}]);
+    }
 }

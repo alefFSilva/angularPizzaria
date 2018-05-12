@@ -1,0 +1,25 @@
+<div class="container-fluid" >
+    <div class="row">
+        <div class="col-lg-12 headerBar">
+            <h2>Pizza Soft</h2>
+            <div class="logout-button">
+                <button (click)="doLogout()">LOGOUT</button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-lg-2">
+            <menu-component></menu-component>
+        </div>
+        <div class="col-md-10 col-lg-10">
+            <div class="content">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 footerBar">
+                <h2>footer</h2>
+        </div>
+    </div>
+</div>
