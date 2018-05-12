@@ -7,6 +7,7 @@ import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class SessionService {
+    public isLogged: boolean = false;
     _currentUser: User;
     _httpClient: HttpClient;
     _authServiceURL = "http://localhost:45/Auth/DoLogin";
@@ -34,10 +35,12 @@ export class SessionService {
     }
 
     private saveCurrentUser(user: User): void {
+        this.isLogged = true;
         localStorage.setItem('userName', user.Email);
     }
 
     private removeCurrentUser():void{
+        this.isLogged = false;
         localStorage.removeItem('userName');
     }
 

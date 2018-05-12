@@ -36,14 +36,15 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.buildForm(formBuilder);
         this.emailControl = this.loginForm.controls['emailControl'];
         this.passwordControl = this.loginForm.controls['passwordControl'];
+        this._isLogged = sessionService.isLogged;
 
         this._toastManager.setRootViewContainerRef(viewContainerRef);
     }
 
     ngOnInit() {
         if (this._isLogged) {
-            this._redirectService.redirectToPath(RoutesPaths.HOME_PATH);
-        }
+            this._redirectService.redirectToPath(RoutesPaths.DASHBOARD_PATH);
+          }
     }
 
     onSubmit(formResult: any): void {
@@ -55,12 +56,12 @@ export class LoginComponent implements OnInit {
                 this._response = result;
 
                 if (this._response.success) {
-                    this._redirectService.redirectToPath(RoutesPaths.HOME_PATH);
+                    this._isLogged = this._sessionService.isLogged;
+                    this._redirectService.redirectToPath(RoutesPaths.DASHBOARD_PATH);
                 } else {
                     this._loginError = true;
                     this.showAccessDeniedError();
                 }
-
             });
     }
 
